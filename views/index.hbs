@@ -1,0 +1,31 @@
+{{>header}}
+
+<body>
+  <header>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">Bienvenido</h1>
+        <p class="lead">Esta es la segunda entrega de introduccion a NodeJS.</p>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+  <div class="row">
+    <div class="offset-md-4 col-md-4">
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label for="selectRol">Selecciona tu rol</label>
+          <select id="selectRol" name="selectRol" class="form-control">
+            <option value="1">Coordinador</option>
+            <option value="2">Iteresado</option>
+            <option value="3"> Aspirante</option>
+          </select>
+          <small id="rolHelp" class="form-text text-muted">Segun tu rol, cambiaran las opciones sobre los
+            cursos.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+      </form>
+    </div>
+  </div>
+  </div>
+  {{>footer}}
