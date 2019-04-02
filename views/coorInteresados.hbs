@@ -1,0 +1,13 @@
+{{>header}}
+{{>headerCoordinador}}
+<div class="container">
+    <div class="row">
+        <h2>Interesados en el curso {{curso.nombre}}</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{{listarInteresados curso.id}}}
+        </div>
+    </div>
+</div>
+{{>footer}}
