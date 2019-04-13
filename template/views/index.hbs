@@ -1,0 +1,48 @@
+{{>header}}
+
+<body>
+  <header>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">Bienvenido</h1>
+        <p class="lead">Esta es la segunda entrega de introduccion a NodeJS.</p>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <form action="/login" method="POST">
+          <div class="form-group">
+            <label for="selectRol">Selecciona tu rol</label>
+            <select id="selectRol" name="selectRol" class="form-control">
+              <option value="Aspirante"> Aspirante</option>
+              <option value="Coordinador">Coordinador</option>              
+            </select>
+            <small id="rolHelp" class="form-text text-muted">Segun tu rol, cambiaran las opciones sobre los
+              cursos.</small>
+          </div>
+          <div class="form-group">
+            <label for="txtCorreo">Correo Electrónico</label>
+            <input type="email" class="form-control" id="txtCorreo" name="txtCorreo">
+          </div>
+          <div class="form-group">
+            <label for="txtPassword">Contraseña</label>
+            <input type="password" class="form-control" id="txtPassword" name="txtPassword">
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <button type="submit" class="btn btn-primary">Acceder</button>
+            </div>
+            <div class="col-md-6">
+              <a class="btn btn-success" href="/registro" role="button">Registrarse</a>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-9">
+        {{{listarCursosInteresados}}}
+      </div>
+    </div>
+  </div>
+  {{>footer}}

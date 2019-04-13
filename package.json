@@ -2,20 +2,27 @@
   "name": "segundaentrega",
   "version": "1.0.1",
   "description": "segunda entrega del curso de introduccion a NodeJs",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
+    "start": "node src/app.js"
   },
   "author": "Alexis Ruano  williamruano@unicauca.edu.co",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.5",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
+    "db": "^1.1.1",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
     "hbs": "^4.0.3",
-    "jquery": "^3.3.1",
-    "nodemon": "^1.18.10",
-    "popper.js": "^1.14.7"
+    "jquery": "^3.4.0",
+    "memorystore": "^1.6.1",
+    "mongo": "^0.1.0",
+    "mongoose": "^5.5.1",
+    "mongoose-unique-validator": "^2.0.2",
+    "nodemon": "^1.18.11",
+    "popper.js": "^1.15.0"
   }
 }

@@ -1,8 +1,9 @@
 const hbs = require('hbs');
-
+const cursosPath = './../../cursos.json';
+const estudiantesPath = './../../estudiantes.json';
 hbs.registerHelper('listarCursosCoordinador', () => {
     cursos = [];
-    cursos = require('./../cursos.json');
+    cursos = require(cursosPath);
     let html = '';
     if (cursos.length > 0) {
         html = '<table class="table table-hover">';
@@ -29,7 +30,7 @@ hbs.registerHelper('listarCursosCoordinador', () => {
 
 hbs.registerHelper('listarCursosInteresados', () => {
     cursos = [];
-    cursos = require('./../cursos.json');
+    cursos = require(cursosPath);
     let cursosDisponibles = cursos.filter(curso => { return curso.estado == 'Disponible' });
     let html = '';
     if (cursosDisponibles.length > 0) {
@@ -60,7 +61,7 @@ hbs.registerHelper('listarCursosInteresados', () => {
 
 hbs.registerHelper('listarCursosOptions', () => {
     cursos = [];
-    cursos = require('./../cursos.json');
+    cursos = require(cursosPath);
     let cursosDisponibles = cursos.filter(curso => { return curso.estado == 'Disponible' });
     let html = '';
     cursosDisponibles.forEach(curso => {
@@ -71,7 +72,7 @@ hbs.registerHelper('listarCursosOptions', () => {
 
 hbs.registerHelper('listarInteresados', (idCurso) => {
     let estudiantes = [];
-    estudiantes = require('./../estudiantes.json');
+    estudiantes = require(estudiantesPath);
     let estudiantesInteresados = estudiantes.filter(estudiante => {
         let curso = estudiante.cursos.find(idCursoItem => { return idCursoItem == idCurso });
         if (curso) {

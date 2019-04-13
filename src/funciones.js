@@ -51,22 +51,29 @@ const crearCurso = (cursoNuevo)=>{
     return false;
 };
 
-const crearEstudiante = (estudianteNuevo, idCurso)=>{
-    listarEstudiantes();
+const crearEstudiante = (estudiante, idCurso)=>{
+    /*listarEstudiantes();
     let estudiante = estudiantes.find(estudiante=>{
         return estudiante.cedula == estudianteNuevo.cedula;
-    });
+    });*/
     let curso = getCurso(idCurso);    
     if(!curso){
         console.log('Curso');
         return false;
     }
-    if(!estudiante){ 
-        estudianteNuevo.cursos.push(idCurso);
-        estudiantes.push(estudianteNuevo);        
-        guardarEstudiantes();
-        return true;
-    }else{
+    //if(!estudiante){ 
+        //estudiante.cursos.push(idCurso);
+        //estudiantes.push(estudiante);        
+        estudiante.save((err,result)=>{
+            if(err){
+                console.log('Error',err);
+                return false;
+            }
+            console.log('Exito',result);
+            return true;
+        });
+        
+    /*}else{
         let idCursoFind = estudiante.cursos.find(idCursoItem =>{return idCursoItem == idCurso});
         if(idCursoFind){
             console.log('cursoFind');
@@ -76,7 +83,7 @@ const crearEstudiante = (estudianteNuevo, idCurso)=>{
             guardarEstudiantes();
             return true;
         }
-    }
+    }*/
 };
 
 const eliminarAspirante = (cedula,idCurso)=>{
@@ -136,6 +143,7 @@ const getCurso = (idCurso)=>{
     });
     return curso;
 };
+
 
 module.exports = {
     crearCurso, cambiarEstadoCurso, cursos, listarCursos, eliminarCurso, getCurso,
