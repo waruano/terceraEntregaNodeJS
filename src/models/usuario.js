@@ -6,7 +6,8 @@ const usuarioSchema = new Schema({
     cedula:{
         type: String,
         require: true,
-        trim:true
+        trim:true,
+        unique: true
     },
     nombre:{
         type: String,
@@ -21,7 +22,7 @@ const usuarioSchema = new Schema({
     },
     contrasenia:{
         type: String,
-        required: false
+        required: true
     },
     telefono:{
         type: String,
