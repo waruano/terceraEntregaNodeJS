@@ -25,7 +25,7 @@ const cursoSchema = new Schema({
     },
     modalidad:{
         type: String,
-        enum:['presencial','virtual']
+        enum:['Sin Especificar','presencial','virtual']
     },
     estado:{
         type: String,

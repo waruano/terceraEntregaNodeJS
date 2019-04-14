@@ -16,7 +16,8 @@ const usuarioSchema = new Schema({
         type: String,
         require: true,
         trim:true,
-        unique: true
+        unique: true,
+        lowercase: true
     },
     contrasenia:{
         type: String,

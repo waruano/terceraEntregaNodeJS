@@ -5,6 +5,14 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session')
+const MemoryStore = require('memorystore')(session)
+app.use(session({
+  cookie: { maxAge: 86400000 },
+  store: new MemoryStore({
+    checkPeriod: 86400000 // prune expired entries every 24h
+  }),
+  secret: 'keyboard cat'
+}))
 // Connection URL
 
 /*const dbUtils = require('./dbUtil');
