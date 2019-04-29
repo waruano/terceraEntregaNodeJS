@@ -30,6 +30,10 @@ const cursoSchema = new Schema({
     estado:{
         type: String,
         default: 'Disponible'
+    },
+    imagen:{
+        type: Buffer,
+        required: true
     }
 });
 cursoSchema.plugin(uniqueValidator);

@@ -3,7 +3,7 @@ const cursosPath = './../../cursos.json';
 const estudiantesPath = './../../estudiantes.json';
 hbs.registerHelper('listarCursosCoordinador', () => {
     cursos = [];
-    cursos = require(cursosPath);
+    cursos = require('./');
     let html = '';
     if (cursos.length > 0) {
         html = '<table class="table table-hover">';
@@ -100,4 +100,10 @@ hbs.registerHelper('listarInteresados', (idCurso) => {
         html += '<div class="alert alert-primary" role="alert">No hay Interesados</div>';
     }
     return html;
+});
+
+hbs.registerHelper('select', function(selected, options) {
+    return options.fn(this).replace(
+        new RegExp(' value=\"' + selected + '\"'),
+        '$& selected="selected"');
 });

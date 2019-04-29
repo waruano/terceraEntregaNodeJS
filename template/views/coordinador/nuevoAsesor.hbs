@@ -1,0 +1,47 @@
+{{>header}}
+{{>headerCoordinador}}
+<div class="container">
+    <div class="row">
+        <h2>Registrar Asesor</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+        <form action="/nuevoAsesor" method="POST">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="txtId">Cédula:*</label>
+                    <input type="text" class="form-control" id="txtId" name="txtId" placeholder="" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="txtNombre">Nombre:*</label>
+                    <input type="text" class="form-control" id="txtNombre" name="txtNombre" placeholder="" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="txtTelefono">Telefono:*</label>
+                    <input type="text" class="form-control" id="txtTelefono" name="txtTelefono" placeholder="" required>
+                </div>
+            </div>   
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="txtCorreo">Correo Electrónico:*</label>
+                    <input type="email" class="form-control" id="txtCorreo" name="txtCorreo" placeholder=""
+                        required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="txtPassword">Contraseña: *</label>
+                    <input type="password" class="form-control" id="txtPassword" name="txtPassword" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <a class="btn btn-secondary" href="/" role="button">Cancelar</a>
+                </div>
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+{{>footer}}

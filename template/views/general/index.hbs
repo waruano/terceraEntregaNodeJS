@@ -31,6 +31,7 @@
                 <select id="selectRol" name="selectRol" class="form-control">
                   <option value="Aspirante"> Aspirante</option>
                   <option value="Coordinador">Coordinador</option>
+                  <option value="Asesor">Asesor</option>
                 </select>
                 <small id="rolHelp" class="form-text text-muted">Segun tu rol, cambiaran las opciones sobre los
                   cursos.</small>
@@ -55,6 +56,27 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </div>
+  <div class="floating-chat">
+    <i style="font-size: 3em" class="fa fa-comments" aria-hidden="true"></i>
+    <div class="chat">
+      <div class="header">
+        <span class="title">
+          Contactar un Asesor
+        </span>
+        <button>
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+
+      </div>
+      <ul class="messages">        
+        <li class="self">Envía tu nombre para iniciar la asesoría</li>
+      </ul>
+      <div class="footer">
+        <div class="text-box" contenteditable="true" disabled="true"></div>
+        <button id="sendMessage">Enviar</button>
       </div>
     </div>
   </div>

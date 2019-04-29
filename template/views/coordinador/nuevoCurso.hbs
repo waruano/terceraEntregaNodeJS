@@ -1,0 +1,64 @@
+{{>header}}
+{{>headerCoordinador}}
+<div class="container">
+    <div class="row">
+        <h2>Nuevo Curso</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/crearCurso" method="POST" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="txtId">Identificador:*</label>
+                        <input type="text" class="form-control" id="txtId" name="txtId" placeholder="" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="txtNombre">Nombre:*</label>
+                        <input type="text" class="form-control" id="txtNombre" name="txtNombre" placeholder="" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="txtDescripcion">Descripción:*</label>
+                        <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" placeholder=""
+                            required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="txtValor">Valor:*</label>
+                        <input type="number" class="form-control" id="txtValor" name="txtValor" placeholder="" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="cbxModalidad">Modalidad:</label>
+                        <select id="cbxModalidad" name="cbxModalidad" class="form-control">
+                            <option value="Sin Especificar">Seleccionar</option>
+                            <option value="presencial">Presencial</option>
+                            <option value="virtual">Virtual</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="txtIntensidad">Intensidad Horaria:</label>
+                        <input type="number" class="form-control" id="txtIntensidad" name="txtIntensidad"
+                            placeholder="">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="fileImagen">Imagen del Curso</label>
+                        <input type="file" class="form-control-file" id="fileImagen" name="fileImagen" accept="image/png, image/jpeg" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <a class="btn btn-secondary" href="/coordinador" role="button">Cancelar</a>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>footer}}
