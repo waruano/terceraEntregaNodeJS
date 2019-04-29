@@ -8,7 +8,7 @@ const session = require('express-session');
 const MemoryStore = require('memorystore')(session);
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-const {Interesados} = require('./models/interesados');
+const { Interesados } = require('./models/interesados');
 const interesados = new Interesados();
 app.use(session({
   secret: 'w@ru@n0',
@@ -79,31 +79,56 @@ io.on('connection', client => {
   client.on('message', (message) => {
     console.log(message);
     let interesado = interesados.getInteresado(client.id);
+    let asesores = interesados.getAsesores();
     if (!interesado) {
-      let lista = interesados.agregarInteresado(client.id,message);
-      console.log(lista);
+      interesados.agregarInteresado(client.id, message);
+      let interesado = interesados.agregarMensaje(client.id, 'interesado', message);
       client.emit('message', 'Bienvenido ' + message + ' ¿en que puedo ayudarte?');
-    }else{
-      let interesado = interesados.agregarMensaje(client.id,'interesado',message);
-      console.log(interesado);
-      client.emit('message', 'En un momento serás atendido...');
+      console.log('Agregando',interesado);
+      asesores.forEach(element => {
+        client.broadcast.to(element).emit('addInteresado', interesado);
+      });
+    } else {
+      let interesado = interesados.agregarMensaje(client.id, 'interesado', message);
+      console.log('Actualizando',interesado);
+      asesores.forEach(element => {
+        client.broadcast.to(element).emit('updateInteresado', interesado);
+      });
+      if(asesores.length == 0){
+        client.emit('message', 'Espera un momento por favor, aun no hay asesores conectados');
+      }
     }
   });
 
-  client.on('disconnect',()=>{
+  client.on('disconnect', () => {
     let interesadoBorrado = interesados.borrarUsuario(client.id);
-    console.log('Borrado',interesadoBorrado);
+    let asesores = interesados.getAsesores();
+    asesores.forEach(element => {
+      client.broadcast.to(element).emit('deleteInteresado', interesadoBorrado);
+    });
   });
-  
-  client.on('asesor',()=>{
-      let lstInteresados = interesados.getInteresados();
-      client.emit('interesados',lstInteresados);
+
+  client.on('asesor', () => {
+    interesados.agregarAsesor(client.id);
+    let lstInteresados = interesados.getInteresados();
+    client.emit('interesados', lstInteresados);
   });
-  
-  client.on('infoInteresado',(interesadoId)=>{
+
+  client.on('infoInteresado', (interesadoId) => {
     let interesado = interesados.getInteresado(interesadoId);
-    client.emit('chatInteresado',interesado);
+    client.emit('chatInteresado', interesado);
   });
+
+  client.on('mensajeAsesor',(data,callback)=>{
+    client.broadcast.to(data.interesado).emit('message', data.mensaje);
+    let interesado = interesados.agregarMensaje(data.interesado, 'asesor', data.mensaje);
+    let asesores = interesados.getAsesores();
+    asesores.forEach(element => {
+      client.broadcast.to(element).emit('updateInteresado', interesado);
+    });
+    callback(interesado.historial[interesado.historial.length-1]);
+  });
+
 });
 
 server.listen(process.env.PORT, () => {

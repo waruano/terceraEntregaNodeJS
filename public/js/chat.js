@@ -4,42 +4,79 @@ let socketIo = io();
 let interesados = [];
 
 $(document).ready(function () {
+    $('.input_msg_write').on('click','.msg_send_btn',function(event){
+        enviarMensajeAsesor();
+    });
     $('.inbox_chat').on('click', '.chat_list', function (event) {
-        //$('.chat_list').removeClass('active_chat');
-        //$(this).addClass('active_chat');
+        $('.chat_list').removeClass('active_chat');
+        $(this).addClass('active_chat');
         let interesadoId = $(this).data('user');
         let interesado = interesados.find(itemInteresado => {
             return itemInteresado.id == interesadoId
         });
-        if (interesado) {
-            var contentHistorial = $('.msg_history');
-            contentHistorial.html('');
-            let historial = interesado.historial;
-            historial.forEach(mensaje => {
-                let html = '';
-                if (mensaje.remitente == 'interesado') {
-                    html = '<div class="incoming_msg">' +
-                        '<div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png"' +
-                        'alt="sunil"> </div>' +
-                        '<div class="received_msg">' +
-                        '<div class="received_withd_msg"><p>' +
-                        mensaje.mensaje+
-                        '</p><span class="time_date">'+
-                        mensaje.fecha+
-                        '</span> </div></div></div>';
-                } else {
-                    html = '<div class="outgoing_msg">'+
-                    '<div class="sent_msg"><p>'+
-                    mensaje.mensaje+
-                    '</p><span class="time_date">'+
-                    mensaje.fecha+
-                    '</span></div></div>';
-                }
-                contentHistorial.append(html);
-            });
-        }
+        actualizarChat(interesado);
     });
+    $('#write_msg').keydown(asesorEnter).prop("disabled", false).focus();
 });
+
+function actualizarChat(interesado){
+    if (interesado) {
+        $('#input_msg_write').attr('data-user', interesado.id);
+        var contentHistorial = $('.msg_history');
+        contentHistorial.html('');
+        let historial = interesado.historial;
+        historial.forEach(mensaje => {
+            let html = '';
+            if (mensaje.remitente == 'interesado') {
+                addMensajeInteresando(mensaje);
+            } else {
+                addMensajeAsesor(mensaje);
+            }            
+        });
+    }
+}
+
+function addMensajeInteresando(mensaje){
+    var contentHistorial = $('.msg_history');
+    let html = '<div class="incoming_msg">' +
+    '<div class="incoming_msg_img"> <img src="img/studenticon.png"' +
+    'alt="sunil"> </div>' +
+    '<div class="received_msg">' +
+    '<div class="received_withd_msg"><p>' +
+    mensaje.mensaje +
+    '</p><span class="time_date">' +
+    mensaje.fecha +
+    '</span> </div></div></div>';
+    contentHistorial.append(html);
+    contentHistorial.finish().animate({
+        scrollTop: contentHistorial.prop("scrollHeight")
+    }, 250);
+}
+
+function addMensajeAsesor(mensaje){
+    var contentHistorial = $('.msg_history');
+    let html = '<div class="outgoing_msg">' +
+                    '<div class="sent_msg"><p>' +
+                    mensaje.mensaje +
+                    '</p><span class="time_date">' +
+                    mensaje.fecha +
+                    '</span></div></div>';
+    contentHistorial.append(html);
+    contentHistorial.finish().animate({
+        scrollTop: contentHistorial.prop("scrollHeight")
+    }, 250);
+}
+
+function enviarMensajeAsesor(){
+    let mensaje = $('#write_msg').val();
+    let interesado = $('#input_msg_write').attr('data-user');
+    let data = {mensaje,interesado};
+    let self = this;
+    socketIo.emit('mensajeAsesor',data,function(mensaje){
+        self.addMensajeAsesor(mensaje);
+        $('#write_msg').val('');
+    });
+}
 
 if (!myStorage.getItem('chatID')) {
     myStorage.setItem('chatID', createUUID());
@@ -123,6 +160,12 @@ function onMetaAndEnter(event) {
     }
 }
 
+function asesorEnter(event) {
+    if (event.keyCode == 13) {
+        enviarMensajeAsesor();
+    }
+}
+
 socketIo.on('message', (message) => {
     var userInput = $('.text-box');
     var messagesContainer = $('.messages');
@@ -145,7 +188,6 @@ socketIo.on('message', (message) => {
 
 socketIo.on('interesados', (infoInteresados) => {
     interesados = infoInteresados;
-    console.log('Interesados', interesados);
     var interesadosContainer = $('.inbox_chat');
     interesadosContainer.html('');
     interesados.forEach(interesado => {
@@ -153,7 +195,7 @@ socketIo.on('interesados', (infoInteresados) => {
         interesadosContainer.append(
             '<div class="chat_list" data-user="' + interesado.id + '">' +
             '<div class="chat_people">' +
-            '<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>' +
+            '<div class="chat_img"> <img src="img/studenticon.png" alt="sunil"> </div>' +
             '<div class="chat_ib"><h5>' +
             interesado.nombre +
             '<span class="chat_date">' +
@@ -162,4 +204,42 @@ socketIo.on('interesados', (infoInteresados) => {
             ultimoMensaje.mensaje +
             '</p></div></div></div>');
     });
+});
+
+socketIo.on('addInteresado', (interesado) => {
+    interesados.push(interesado);
+    var interesadosContainer = $('.inbox_chat');
+    let ultimoMensaje = interesado.historial[interesado.historial.length - 1];
+    interesadosContainer.append(
+        '<div class="chat_list" data-user="' + interesado.id + '" id ="' + interesado.id + '">' +
+        '<div class="chat_people">' +
+        '<div class="chat_img"> <img src="img/studenticon.png" alt="sunil"> </div>' +
+        '<div class="chat_ib"><h5>' +
+        interesado.nombre +
+        '<span class="chat_date">' +
+        ultimoMensaje.fecha +
+        '</span></h5> <p id="last_'+interesado.id+'">' +
+        ultimoMensaje.mensaje +
+        '</p></div></div></div>');
+
+});
+
+socketIo.on('deleteInteresado', (interesado) => {
+    if (interesado) {
+        let divInteresado = $('#' + interesado.id);
+        divInteresado.remove();
+        interesados = interesados.filter(itemInteresado => { return interesado.id != itemInteresado.id });
+    }
+});
+
+socketIo.on('updateInteresado',(interesado)=>{
+    interesadoIndex = interesados.findIndex(interesadoItem => {
+        return interesadoItem.id == interesado.id;
+    });
+    interesados[interesadoIndex] = interesado;
+    if($('#input_msg_write').attr('data-user') == interesado.id) {
+        actualizarChat(interesado);
+    }
+    $('#last_'+interesado.id).html(interesado.historial[interesado.historial.length - 1].mensaje);
+    
 });

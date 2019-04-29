@@ -1,6 +1,7 @@
 class Interesados{
     constructor() {
         this.interesados = [];
+        this.asesores = [];
     }
     
     agregarInteresado(id,nombre) {
@@ -10,6 +11,15 @@ class Interesados{
         return this.interesados;
     }
 
+    agregarAsesor(id){
+        this.asesores.push(id);
+        return this.asesores;
+    }
+
+    getAsesores(){
+        return this.asesores;
+    }
+    
     getInteresados(){
         return this.interesados;
     }

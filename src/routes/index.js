@@ -31,6 +31,10 @@ app.get('/', (req, res) => {
                 '<th scope="col">Nombre</th><th scope="col">Valor</th><th scope="col">Acciones</th></tr></thead>';
             html += '<tboddy>'
             result.forEach(curso => {
+                let imagen = '';
+                if (curso.imagen) {
+                    imagen = curso.imagen.toString('base64');
+                }
                 html += '<tr>';
                 html += '<td>' + curso.nombre + '</td>';
                 html += '<td>' + curso.valor + '</td>';
@@ -38,9 +42,11 @@ app.get('/', (req, res) => {
                 html += '</tr>';
                 html += '<tr class="collapse curso' + curso.id + '">';
                 html += '<td colspan="4">';
-                html += '<div class="card card-body">';
-                html += '<div class="row"><div class="col-md-2"><strong>Descripción:</strong></div><div class="col-md-10">' + curso.descripcion + '</div></div><div class="row"><div class="col-md-2"><strong>Modalidad: </strong></div><div class="col-md-4">' + curso.modalidad + '</div><div class="col-md-2"><strong>Intensidad Horaria: </strong></div><div class="col-md-4">' + (curso.intensidad ? curso.intensidad : 'Sin Especificar') + '</div></div>';
-                html += '</div>';
+                html += '<div class="card card-body"><div class="row">';
+                html += '<div class="col-md-4 text-center"><img style="max-width: 25%" src = "data:img/png;base64,' + imagen + '" class="img-thumbnail">'+
+                '</div><div class="col-md-8"><div class="row"><div class="col-md-6"><strong>Descripción:</strong></div><div class="col-md-6">' + curso.descripcion + 
+                '</div></div><div class="row"><div class="col-md-6"><strong>Modalidad: </strong></div><div class="col-md-6">' + curso.modalidad + '</div><div class="col-md-6"><strong>Intensidad Horaria: </strong></div><div class="col-md-6">' + (curso.intensidad ? curso.intensidad : 'Sin Especificar') + '</div></div></div>';
+                html += '</div></div>';
                 html += '</div></td></tr>';
             });
             html += '</tboddy></table>';
@@ -125,13 +131,13 @@ app.post('/registro', (req, res) => {
 
 app.get('/coordinador', (req, res) => {
 
-    /*Usuario.findById(req.session.usuario, (err, result) => {
+    Usuario.findById(req.session.usuario, (err, result) => {
         if (err) {
             return res.render('coordinador/coorMenError', { mensaje: 'Error - ' + err });
         }
         if (!result) {
             return res.render('coordinador/coorMenError', { mensaje: 'La sesion ha expirado' });
-        }*/
+        }
 
     Curso.find({}, (err, result) => {
         if (err) {
@@ -169,8 +175,8 @@ app.get('/coordinador', (req, res) => {
             cursosHtml: html
         });
     });
-    /*}
-    );*/
+    }
+    );
 });
 app.get('/nuevoCurso', (req, res) => {
     res.render('coordinador/nuevoCurso', {
@@ -486,18 +492,18 @@ app.get('/aspirante', (req, res) => {
 });
 
 app.get('/asesor', (req, res) => {
-    /*Usuario.findById(req.session.usuario, (err, result) => {
+    Usuario.findById(req.session.usuario, (err, result) => {
         if (err) {
             return res.render('general/genMenError', { mensaje: 'Error - ' + err });
         }
         if (!result) {
             return res.render('general/genMenError', { mensaje: 'La sesion ha expirado' });
-        }*/
+        }
 
         return res.render('asesor/asesor', {
             title: 'Asesor'
         });
-   // })
+    })
 });
 
 app.get('/interesado', (req, res) => {
